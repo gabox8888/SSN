@@ -1,19 +1,28 @@
-#! usr/bin/perl
+#!/usr/bin/perl -w
 
-use CGI:'standard';
+use CGI;
+
+$cgi = new CGI;
 
 $file = 'members.csv';
-open(INFO, "<$file");
-@users = <INFO>;
+open(INFO, ">>$file");
 
-my $name = param('newName');
-my $user = param('newUser');
-my $pass = param('newPassword');
+my $name = $cgi->param( 'newName' );
+my $user = $cgi->param( 'newUser' );
+my $pass = $cgi->param( 'newPassword' );
 
-my $line = sprintf("%s,%s,%s /n",$name, $user, $pass);
+my $line = $name . "," . $user . "," . $pass . "\n";
 
-print $file $line;
+print INFO $line;
 
-close($file);
+close(INFO);
 
-
+$file = 'index.html';
+open(HEY, "<$file");
+@lines=<HEY>;
+close(HEY);
+print "Content-Type: text/html\n\n";
+foreach $line (@lines)
+{
+  print $line;
+}
